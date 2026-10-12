@@ -17,6 +17,7 @@ def show_menu():
     print("5) Show the last card")
     print("6) Category breakdown")
     print("7) Deck summary")
+    print("8) Score summary")
     print("0) Quit")
 
 
@@ -38,6 +39,8 @@ def main():
             total = len(cards)
             print("You scored " + str(score) + "/" + str(total) +
                   " (" + str(core.percent_correct(score, total)) + "%).")
+            core.record_score(data, score)
+            storage.save_data(data)
         elif choice == "2":
             core.list_cards(core.get_cards(data))
         elif choice == "3":
@@ -57,6 +60,8 @@ def main():
             print(core.count_by_category(core.get_cards(data)))
         elif choice == "7":
             print(reports.deck_summary(data))
+        elif choice == "8":
+            print(reports.score_summary(data))
         else:
             print("Please pick a number from the menu.")
 

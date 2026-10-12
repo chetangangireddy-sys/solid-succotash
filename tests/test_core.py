@@ -2,7 +2,7 @@
 
 import unittest
 
-from features import core
+from features import core, reports
 
 
 class TestCore(unittest.TestCase):
@@ -16,6 +16,19 @@ class TestCore(unittest.TestCase):
         card = core.add_card(data, "New question?", "yes")
         self.assertEqual(card["id"], 2)
         self.assertEqual(len(data["cards"]), 2)
+
+    def test_record_score_appends_to_history(self):
+        data = {"history": [4, 5]}
+        result = core.record_score(data, 6)
+        self.assertEqual(result, [4, 5, 6])
+        self.assertEqual(data["history"], [4, 5, 6])
+
+    def test_score_summary_shows_recent_scores(self):
+        data = {"history": [5, 8, 3, 7, 10, 6]}
+        summary = reports.score_summary(data)
+        self.assertIn("10", summary)
+        self.assertIn("6", summary)
+        self.assertIn("Score history", summary)
 
 
 if __name__ == "__main__":
