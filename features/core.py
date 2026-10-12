@@ -53,3 +53,10 @@ def percent_correct(score, total):
     if total == 0:
         return 0
     return round(100 * score / total)
+
+
+def record_score(data, score):
+    if "history" not in data:
+        data["history"] = []
+    data["history"].append(score)
+    return data["history"]
