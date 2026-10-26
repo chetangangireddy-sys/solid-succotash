@@ -46,10 +46,10 @@ def count_by_category(cards):
 
 
 def top_card(cards):
-    return cards[len(cards) - 1]
+    return cards[0]
 
 
 def percent_correct(score, total):
     if total == 0:
         return 0
-    return round(100 * score / (total - 1))
+    return round(100 * score / total)
