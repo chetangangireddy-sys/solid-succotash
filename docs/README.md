@@ -1,8 +1,7 @@
 # StudySprint
 
-A small flashcard and quiz trainer you run in the terminal. Load a deck of cards
-from a JSON file, quiz yourself, and see your score at the end. This is your
-squad's starting product for Elite 101 - you'll grow it one ticket at a time.
+StudySprint is a terminal flashcard trainer. It loads a JSON deck, runs quizzes,
+tracks scores, and saves deck changes and quiz history between sessions.
 
 ## Run it
 
@@ -16,6 +15,16 @@ python main.py
 python -m unittest
 ```
 
+## Features
+
+- Standard quizzes and timed lightning rounds with a fixed-width progress bar.
+- Add cards, study by category, or import a CSV deck with `question`, `answer`,
+	and `category` columns.
+- Review missed answers, track the best answer streak, and generate shuffled
+	multiple-choice options from the deck.
+- Category, deck, and recent-score summaries.
+- Cards and score history persist in `data/studysprint.json`.
+
 ## How it's laid out
 
 | File | What it does |
@@ -23,19 +32,16 @@ python -m unittest
 | `main.py` | The menu loop you interact with |
 | `storage.py` | Loads and saves the JSON data file |
 | `features/core.py` | The deck, the quiz loop, and small helpers |
-| `features/reports.py` | Summary reports (half-built - finish it via a ticket) |
+| `features/reports.py` | Deck, category, and score reports |
 | `data/studysprint.json` | The card deck and score history |
-| `tests/test_core.py` | Example tests to copy from |
+| `tests/` | Unit and command-line workflow tests |
 
 ## Team
 
-<!-- Add yourself here on your Git lesson: - Your Name (role) -->
+- Chetan Angireddy (developer)
 
-- (your squad will add themselves here)
+## CSV format
 
-## Where to start
-
-Pick a ticket from the `tickets/` folder (or the Issues tab once your section
-repo exists). Read `CONTRIBUTING.md` for the Definition of Done every pull
-request has to meet.
-- Chetan: first commit from the command line.
+CSV imports require a header row with `question`, `answer`, and `category`
+columns. Questions and answers must not be blank. Imported cards continue the
+deck's existing ID sequence.

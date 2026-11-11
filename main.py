@@ -3,6 +3,8 @@
 Run it with:  python main.py
 """
 
+import time
+
 import storage
 from features import core, reports
 
@@ -18,6 +20,8 @@ def show_menu():
     print("6) Category breakdown")
     print("7) Deck summary")
     print("8) Score summary")
+    print("9) Lightning round")
+    print("10) Import cards from CSV")
     print("0) Quit")
 
 
@@ -33,12 +37,16 @@ def main():
         if choice == "0":
             print("See you next session!")
             break
-        elif choice == "1":
+        elif choice in ("1", "9"):
             cards = core.get_cards(data)
+            started = time.perf_counter() if choice == "9" else None
             score = core.run_quiz(cards)
             total = len(cards)
             print("You scored " + str(score) + "/" + str(total) +
                   " (" + str(core.percent_correct(score, total)) + "%).")
+            if started is not None:
+                elapsed = time.perf_counter() - started
+                print("Time: " + format(elapsed, ".2f") + " seconds.")
             core.record_score(data, score)
             storage.save_data(data)
         elif choice == "2":
@@ -52,16 +60,33 @@ def main():
         elif choice == "4":
             category = input("Category: ").strip()
             matches = core.cards_by_category(core.get_cards(data), category)
-            for card in matches:
-                print("- " + card["question"])
+            if matches:
+                for card in matches:
+                    print("- " + card["question"])
+            else:
+                print("No cards found in that category.")
         elif choice == "5":
-            print(core.top_card(core.get_cards(data))["question"])
+            cards = core.get_cards(data)
+            if cards:
+                print(core.top_card(cards)["question"])
+            else:
+                print("The deck has no cards yet.")
         elif choice == "6":
-            print(core.count_by_category(core.get_cards(data)))
+            print(reports.category_report(data))
         elif choice == "7":
             print(reports.deck_summary(data))
         elif choice == "8":
             print(reports.score_summary(data))
+        elif choice == "10":
+            path = input("CSV file path: ").strip()
+            try:
+                imported = core.import_cards_from_csv(path, core.get_cards(data))
+            except (OSError, ValueError) as error:
+                print("Could not import cards: " + str(error))
+            else:
+                data["cards"].extend(imported)
+                storage.save_data(data)
+                print("Imported " + str(len(imported)) + " cards.")
         else:
             print("Please pick a number from the menu.")
 
