@@ -16,3 +16,11 @@ release goes first. Keep each entry to what a user would notice.
 ```
 
 <!-- Your first real release note goes below this line. -->
+
+## v1.0 - 2026-11-11
+### Added
+- Added missed-answer review selection, best-streak tracking, and quiz progress bars.
+- Added CSV deck import with validation and unique card IDs.
+- Added timed lightning rounds and shuffled multiple-choice option generation.
+- Added category breakdown reporting and recent score summaries.
+- Added persistent deck and score history storage in the local JSON data file.

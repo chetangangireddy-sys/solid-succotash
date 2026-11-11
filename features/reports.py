@@ -1,8 +1,4 @@
-"""Reporting helpers for StudySprint.
-
-Heads up: this module is half-built on purpose. `deck_summary` works, but
-`category_report` is still a stub with a clear seam to finish (see the tickets).
-"""
+"""Reporting helpers for StudySprint."""
 
 
 def deck_summary(data):
@@ -18,7 +14,8 @@ def score_summary(data):
 
 
 def category_report(data):
-    # TODO(ticket): tally each card into a {category: count} dict and return it.
-    # For now this returns an empty report so the menu never crashes.
     report = {}
+    for card in data.get("cards", []):
+        category = card.get("category", "general")
+        report[category] = report.get(category, 0) + 1
     return report
